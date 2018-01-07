@@ -1,0 +1,30 @@
+---
+- name: Provision wolkenkit machine
+  hosts: 127.0.0.1
+  user: wolkenkit
+  become: true
+  connection: local
+
+  vars_files:
+    - vars.yml
+
+  pre_tasks:
+    - include: tasks/packages.yml
+
+  roles:
+    - role: nvm
+      remote_user: wolkenkit
+      become: true
+      nvm:
+        user: "{{ user }}"
+        version: "{{ nvm_version }}"
+        node_version: "{{ node_version }}"
+        profile_file: ~{{ user }}/.bashrc
+        shell: bash
+
+    - role: docker
+      become: true
+
+
+  tasks:
+    - include: tasks/files.yml

@@ -1,0 +1,48 @@
+---
+- name: Install dependencies
+  become: yes
+  apt: pkg={{ item }} state=present
+  with_items:
+    - git
+    - curl
+    - build-essential
+    - libssl-dev
+  tags: nvm
+
+- name: Check for nvm
+  remote_user: "{{ nvm.user }}"
+  stat: path=~{{ nvm.user }}/.nvm
+  register: nvm_path
+
+- name: Install nvm
+  remote_user: "{{ nvm.user }}"
+  become: false
+  git: repo=https://github.com/creationix/nvm.git dest=~{{ nvm.user }}/.nvm version={{ nvm.version }}
+  when: not nvm_path.stat.exists
+
+- name: Check for bashrc
+  remote_user: "{{ nvm.user }}"
+  become: false
+  file: path={{ nvm.profile_file }} state=touch
+
+- name: Source nvm
+  remote_user: "{{ nvm.user }}"
+  become: false
+  lineinfile: >
+    dest={{ nvm.profile_file }}
+    line="source ~{{ nvm.user }}/.nvm/nvm.sh"
+
+- name: Install node
+  remote_user: "{{ nvm.user }}"
+  become: false
+  shell: . ~{{ nvm.user }}/.nvm/nvm.sh && nvm install {{ nvm.node_version }} executable=/bin/{{nvm.shell}}
+
+- name: Set default node version to installed node
+  remote_user: "{{ nvm.user }}"
+  become: false
+  shell: . ~{{ nvm.user }}/.nvm/nvm.sh && nvm alias default {{ nvm.node_version }} executable=/bin/{{nvm.shell}}
+
+- name: Install wolkenkit package
+  remote_user: "{{ nvm.user }}"
+  become: false
+  shell: . ~{{ nvm.user }}/.nvm/nvm.sh && npm install -g wolkenkit executable=/bin/{{nvm.shell}}
