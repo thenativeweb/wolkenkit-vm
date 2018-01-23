@@ -17,7 +17,6 @@ VM image is based on ubuntu 16.04.3 server.
 
 - [ ] Generate SSH keys for vm, set random user password
 - [ ] Proper networking configuration (set bridge network after creation manually)
-- [ ] Get `wolkenkit start` running
 - [ ] Get rid of deprecated warnings for ansible
 - [ ] Add more builders (VMWare,...)
 - [ ] ...
