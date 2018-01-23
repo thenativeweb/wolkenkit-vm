@@ -41,6 +41,48 @@
         "ssh_password": "wolkenkit",
         "ssh_timeout": "30m",
         "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
+      },{
+        "type": "vmware-iso",
+        "vmx_data": {
+            "numvcpus": "2",
+            "memsize": "2048"
+        },
+        "http_directory" : "http",
+        "boot_command": [
+            "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>", 
+            "/install/vmlinuz<wait>",
+            " auto<wait>",
+            " console-setup/ask_detect=false<wait>",
+            " console-setup/layoutcode=us<wait>",
+            " console-setup/modelcode=pc105<wait>",
+            " debconf/frontend=noninteractive<wait>",
+            " debian-installer=en_US<wait>",
+            " fb=false<wait>",
+            " initrd=/install/initrd.gz<wait>",
+            " kbd-chooser/method=us<wait>",
+            " keyboard-configuration/layout=USA<wait>",
+            " keyboard-configuration/variant=USA<wait>",
+            " locale=en_US<wait>",
+            " netcfg/get_domain=vm<wait>",
+            " netcfg/get_hostname=wolkenkit<wait>",
+            " grub-installer/bootdev=/dev/sda<wait>",
+            " noapic<wait>",
+            " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg",
+            " -- <wait>",
+            "<enter><wait>"
+        ],
+        "disk_size": 10000,
+        "guest_os_type": "ubuntu-64",
+        "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.3-server-amd64.iso",
+        "iso_checksum": "10fcd20619dce11fe094e960c85ba4a9",
+        "iso_checksum_type": "md5",
+        "ssh_username": "wolkenkit",
+        "ssh_password": "wolkenkit",
+        "ssh_timeout": "30m",
+        "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
       }],
 
 	"provisioners": [{
