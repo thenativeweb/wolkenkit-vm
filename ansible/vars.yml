@@ -2,6 +2,7 @@
 hostname: wolkenkitvm
 user: wolkenkit
 group: wolkenkit
+shell: bash
 
 nvm_version: v0.33.8
 node_version: v8

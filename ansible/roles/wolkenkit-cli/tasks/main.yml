@@ -1,0 +1,5 @@
+---
+  - name: Install wolkenkit package
+    remote_user: "{{ remote_user }}"
+    become: false
+    shell: . ~{{ user }}/.nvm/nvm.sh && npm install -g wolkenkit executable=/bin/{{shell}}

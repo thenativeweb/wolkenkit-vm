@@ -18,7 +18,7 @@
     apt: pkg="docker-ce" state=latest
 
   - user:
-      name: wolkenkit
+      name: "{{ user }}"
       group: docker
       append: yes
 
