@@ -3,7 +3,12 @@
         "type": "virtualbox-iso",
         "vboxmanage": [
            [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
-           [ "modifyvm", "{{.Name}}", "--cpus", "2" ]
+           [ "modifyvm", "{{.Name}}", "--cpus", "2" ],
+           [ "modifyvm", "{{.Name}}", "--natpf1", "guestssh,tcp,,2222,,22" ],
+           [ "modifyvm", "{{.Name}}", "--natpf1", "guestwk1,tcp,,3000,,3000" ],
+           [ "modifyvm", "{{.Name}}", "--natpf1", "guestwk2,tcp,,3001,,3001" ],
+           [ "modifyvm", "{{.Name}}", "--natpf1", "guestwk3,tcp,,3002,,3002" ],
+           [ "modifyvm", "{{.Name}}", "--natpf1", "guestwk4,tcp,,3003,,3003" ]
         ],
         "http_directory" : "http",
         "boot_command": [
