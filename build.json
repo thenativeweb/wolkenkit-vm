@@ -1,4 +1,9 @@
 {
+    "variables": {
+        "node_version": "v8",
+        "nvm_version": "v0.33.8",
+        "wolkenkit_version": "latest"
+    },
 	"builders": [{
         "type": "virtualbox-iso",
         "vboxmanage": [
@@ -105,6 +110,7 @@
 		"playbook_file": "ansible/provision.yml",
 		"role_paths": [
 			"ansible/roles"
-		]
-	}]
+        ],
+        "extra_arguments": [ "--extra-vars \"wolkenkit_version={{user `wolkenkit_version`}} node_version={{user `node_version`}}  nvm_version={{user `nvm_version`}}\"" ]
+    }]
 }

@@ -25,10 +25,14 @@
     - role: docker
       become: true
 
-    - role: wolkenkit-cli
+    - role: wolkenkit
       vars:
         remote_user: "{{ user }}"
       become: false
+      wk:
+        user: "{{ user }}"
+        version: "{{ wolkenkit_version }}"
+        shell: "{{ shell }}"
 
   tasks:
     - import_tasks: tasks/files.yml
