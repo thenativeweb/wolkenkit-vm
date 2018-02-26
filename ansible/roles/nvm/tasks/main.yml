@@ -1,0 +1,33 @@
+---
+- name: Install dependencies
+  become: yes
+  apt: pkg={{ item }} state=present
+  with_items:
+    - git
+    - curl
+    - build-essential
+    - libssl-dev
+  tags: nvm
+
+
+- name: Install nvm version {{ nvm.version }}
+  remote_user: "{{ nvm.user }}"
+  become: false
+  git: repo=https://github.com/creationix/nvm.git dest=~{{ nvm.user }}/.nvm version={{ nvm.version }}
+
+- name: Source nvm
+  remote_user: "{{ nvm.user }}"
+  become: false
+  lineinfile: >
+    dest={{ nvm.profile_file }}
+    line="source ~{{ nvm.user }}/.nvm/nvm.sh"
+
+- name: Install node {{ nvm.node_version }}
+  remote_user: "{{ nvm.user }}"
+  become: false
+  shell: . ~{{ nvm.user }}/.nvm/nvm.sh && nvm install {{ nvm.node_version }} executable=/bin/{{nvm.shell}}
+
+- name: Set installed node {{ nvm.node_version }} as default version
+  remote_user: "{{ nvm.user }}"
+  become: false
+  shell: . ~{{ nvm.user }}/.nvm/nvm.sh && nvm alias default {{ nvm.node_version }} executable=/bin/{{nvm.shell}}

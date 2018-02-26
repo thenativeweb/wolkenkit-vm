@@ -1,0 +1,7 @@
+---
+hostname: wolkenkitvm
+user: wolkenkit
+group: wolkenkit
+shell: bash
+
+project_root: /home/wolkenkit/project

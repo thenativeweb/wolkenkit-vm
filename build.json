@@ -1,0 +1,116 @@
+{
+    "variables": {
+        "node_version": "v8",
+        "nvm_version": "v0.33.8",
+        "wolkenkit_version": "latest"
+    },
+	"builders": [{
+        "type": "virtualbox-iso",
+        "vboxmanage": [
+           [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
+           [ "modifyvm", "{{.Name}}", "--cpus", "2" ],
+           [ "modifyvm", "{{.Name}}", "--natpf1", "guestssh,tcp,,2222,,22" ],
+           [ "modifyvm", "{{.Name}}", "--natpf1", "guestwk1,tcp,,3000,,3000" ],
+           [ "modifyvm", "{{.Name}}", "--natpf1", "guestwk2,tcp,,3001,,3001" ],
+           [ "modifyvm", "{{.Name}}", "--natpf1", "guestwk3,tcp,,3002,,3002" ],
+           [ "modifyvm", "{{.Name}}", "--natpf1", "guestwk4,tcp,,3003,,3003" ]
+        ],
+        "http_directory" : "http",
+        "boot_command": [
+            "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>", 
+            "/install/vmlinuz<wait>",
+            " auto<wait>",
+            " console-setup/ask_detect=false<wait>",
+            " console-setup/layoutcode=us<wait>",
+            " console-setup/modelcode=pc105<wait>",
+            " debconf/frontend=noninteractive<wait>",
+            " debian-installer=en_US<wait>",
+            " fb=false<wait>",
+            " initrd=/install/initrd.gz<wait>",
+            " kbd-chooser/method=us<wait>",
+            " keyboard-configuration/layout=USA<wait>",
+            " keyboard-configuration/variant=USA<wait>",
+            " locale=en_US<wait>",
+            " netcfg/get_domain=vm<wait>",
+            " netcfg/get_hostname=wolkenkit<wait>",
+            " grub-installer/bootdev=/dev/sda<wait>",
+            " noapic<wait>",
+            " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg",
+            " -- <wait>",
+            "<enter><wait>"
+        ],
+        "disk_size": 10000,
+        "guest_os_type": "Ubuntu_64",
+        "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.3-server-amd64.iso",
+        "iso_checksum": "10fcd20619dce11fe094e960c85ba4a9",
+        "iso_checksum_type": "md5",
+        "ssh_username": "wolkenkit",
+        "ssh_password": "wolkenkit",
+        "ssh_timeout": "30m",
+        "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
+      },{
+        "type": "vmware-iso",
+        "vmx_data": {
+            "numvcpus": "2",
+            "memsize": "2048"
+        },
+        "http_directory" : "http",
+        "boot_command": [
+            "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>", 
+            "/install/vmlinuz<wait>",
+            " auto<wait>",
+            " console-setup/ask_detect=false<wait>",
+            " console-setup/layoutcode=us<wait>",
+            " console-setup/modelcode=pc105<wait>",
+            " debconf/frontend=noninteractive<wait>",
+            " debian-installer=en_US<wait>",
+            " fb=false<wait>",
+            " initrd=/install/initrd.gz<wait>",
+            " kbd-chooser/method=us<wait>",
+            " keyboard-configuration/layout=USA<wait>",
+            " keyboard-configuration/variant=USA<wait>",
+            " locale=en_US<wait>",
+            " netcfg/get_domain=vm<wait>",
+            " netcfg/get_hostname=wolkenkit<wait>",
+            " grub-installer/bootdev=/dev/sda<wait>",
+            " noapic<wait>",
+            " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg",
+            " -- <wait>",
+            "<enter><wait>"
+        ],
+        "disk_size": 10000,
+        "guest_os_type": "ubuntu-64",
+        "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.3-server-amd64.iso",
+        "iso_checksum": "10fcd20619dce11fe094e960c85ba4a9",
+        "iso_checksum_type": "md5",
+        "ssh_username": "wolkenkit",
+        "ssh_password": "wolkenkit",
+        "ssh_timeout": "30m",
+        "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
+      }],
+
+	"provisioners": [{
+		"type": "shell",
+		"inline": [
+			"DEBIAN_FRONTEND=noninteractive",
+			"sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common python-software-properties",
+            "sudo add-apt-repository -y ppa:ansible/ansible",
+			"sudo apt-get update",
+			"sudo apt-get -y install ansible"
+		]
+	}, {
+		"type": "ansible-local",
+		"playbook_dir": "ansible",
+		"playbook_file": "ansible/provision.yml",
+		"role_paths": [
+			"ansible/roles"
+        ],
+        "extra_arguments": [ "--extra-vars \"wolkenkit_version={{user `wolkenkit_version`}} node_version={{user `node_version`}}  nvm_version={{user `nvm_version`}}\"" ]
+    }]
+}

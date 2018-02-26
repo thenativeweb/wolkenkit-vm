@@ -1,0 +1,25 @@
+---
+- block:
+  - name: Add an Apt signing key, uses whichever key is at the URL
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: Add Docker repository.
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+      state: present
+      update_cache: yes
+
+  - name: Install docker-ce
+    apt: pkg="docker-ce" state=latest
+
+  - name: Add group to wolkenkit
+    apt: pkg="docker-ce" state=latest
+
+  - user:
+      name: "{{ user }}"
+      group: docker
+      append: yes
+
+  become: true
