@@ -1,3 +1,15 @@
+# Node.js folders
+*coverage/
+*node_modules/
+
+# Build artefacts
+*build/
+*builds/
+
+# OS generated files and folders
+.DS_Store
+npm-debug.log
+
+# Packer files
 packer_cache
 output-*
-builds/

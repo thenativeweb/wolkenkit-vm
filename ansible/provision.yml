@@ -17,8 +17,8 @@
       become: true
       nvm:
         user: "{{ user }}"
-        version: "{{ nvm_version }}"
-        node_version: "{{ node_version }}"
+        version: "v{{ nvm_version }}"
+        node_version: "v{{ node_version }}"
         profile_file: ~{{ user }}/.bashrc
         shell: "{{ shell }}"
 

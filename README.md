@@ -2,36 +2,66 @@
 
 wolkenkit-vm is a Packer script to setup virtual machines that run wolkenkit.
 
-**Please note that this repository is currently not maintained, and that the code does not work.**
+## Installation
 
-**This script should only be used for testing and development purposes. It is not built for live enviroments.**
+To setup virtual machines you first need to install [Packer](https://www.packer.io/) on your machine. Depending on which platforms you want to build virtual machines for, you must also install [VMware](https://www.vmware.com/) or [VirtualBox](https://www.virtualbox.org/) (or both).
 
-VM image is based on ubuntu 16.04.3 server.
-The VirtualBox image has added port forwarding rules for ssh and wolkenkit ports.
-- 2222:22
-- 3000:3000
-- 3001:3001
-- 3002:3002
-- 3003:3003
+## Quick start
 
-In order to connect to the VM via ssh, you can run `ssh wolkenkit@localhost -p 2222`. The default password is `wolkenkit`.
+To build virtual machines for VMware and VirtualBox run:
 
-## Build images
+```shell
+$ packer build build.json
+```
 
-- Run `packer build build.json` to build VMware and VirtualBox machines
-    - Only build VirtualBox: `packer build --only=virtualbox-iso build.json`
-    - Only build VMware: `packer build --only=vmware-iso build.json`
-- Pass one or more `var` parameters in order to change the default version of nvm, Node.js or wolkenkit
-    - `packer build --only=virtualbox-iso -var 'wolkenkit_version=1.2.1' -var 'nvm_version=v0.33.7' -var 'node_version=v9' build.json`
- - Defaults are:
-    - nvm: v0.33.8
-    - Node.js: v8
-    - wolkenkit: latest
-- Open/Import `output-<virtualbox|vmware>-iso/packer-<virtualbox|vmware>-iso-<number>.ovf`
-- Start VM 
+To build a virtual machine only for VMware run:
 
-## TODOs
+```shell
+$ packer build --only=vmware-iso build.json
+```
 
-- [ ] Generate SSH keys for VM
-- [ ] Generate random user password
-- [ ] Figure out if port forwarding can be added for VMware too
+To build a virtual machine only for VirtualBox run:
+
+```shell
+$ packer build --only=virtualbox-iso build.json
+```
+
+Afterwards, use the `.ovf` file in the `output-vmware-iso` or `output-virtualbox-iso` directory to create a new virtual machine in VMware or VirtualBox respectively.
+
+### Configuring the build
+
+You may need to adjust the versions of nvm, Node.js or wolkenkit. For that, provide the `-var` flag and set `nvm_version`, `node_version` or `wolkenkit_version` to the desired value, e.g.:
+
+```shell
+$ packer build -var 'wolkenkit_version=1.2.1' build.json
+```
+
+Alternatively, you may change the appropriate lines in the file `build.json`.
+
+### Using SSH
+
+The virtual machine for VirtualBox automatically forwards the following ports for SSH and wolkenkit:
+
+Virtual machine | Host
+-|-
+22 | 2222
+3000 | 3000
+3001 | 3001
+3002 | 3002
+3003 | 3003
+
+To connect via SSH to the virtual machine, run the following command. The default password is `wolkenkit`:
+
+```shell
+$ ssh wolkenkit@localhost -p 2222
+```
+
+## License
+
+Copyright (c) 2017-2018 the native web.
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along with this program. If not, see [GNU Licenses](http://www.gnu.org/licenses/).
