@@ -2,6 +2,8 @@
 
 wolkenkit-vm is a Packer script to setup virtual machines that run wolkenkit.
 
+*Please note that the virtual machines have been designed for evaluating wolkenkit and developing applications, and are not suited for production usage.*
+
 ## Installation
 
 To setup virtual machines you first need to install [Packer](https://www.packer.io/) on your machine. Depending on which platforms you want to build virtual machines for, you must also install [VMware](https://www.vmware.com/) or [VirtualBox](https://www.virtualbox.org/) (or both).
