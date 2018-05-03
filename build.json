@@ -1,8 +1,13 @@
 {
   "variables": {
+    "box_version": "0.1.0",
+    "box_description": "wolkenkit CLI 1.2.4, Ubuntu Server 16.04.4, Node.js 8.11.1",
+
     "node_version": "8.11.1",
     "nvm_version": "0.33.11",
-    "wolkenkit_version": "latest"
+    "wolkenkit_version": "latest",
+
+    "vagrant_cloud_access_token": "{{env `VAGRANT_CLOUD`}}"
   },
   "builders": [
     {
@@ -43,10 +48,12 @@
         " -- <wait>",
         "<enter><wait>"
       ],
+      "boot_wait": "10s",
       "disk_size": 10000,
       "guest_os_type": "Ubuntu_64",
-      "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.3-server-amd64.iso",
-      "iso_checksum": "10fcd20619dce11fe094e960c85ba4a9",
+      "headless": true,
+      "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.4-server-amd64.iso",
+      "iso_checksum": "6a7f31eb125a0b2908cf2333d7777c82",
       "iso_checksum_type": "md5",
       "ssh_username": "wolkenkit",
       "ssh_password": "wolkenkit",
@@ -85,10 +92,12 @@
         " -- <wait>",
         "<enter><wait>"
       ],
+      "boot_wait": "10s",
       "disk_size": 10000,
       "guest_os_type": "ubuntu-64",
-      "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.3-server-amd64.iso",
-      "iso_checksum": "10fcd20619dce11fe094e960c85ba4a9",
+      "headless": true,
+      "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.4-server-amd64.iso",
+      "iso_checksum": "6a7f31eb125a0b2908cf2333d7777c82",
       "iso_checksum_type": "md5",
       "ssh_username": "wolkenkit",
       "ssh_password": "wolkenkit",
@@ -115,5 +124,19 @@
       ],
       "extra_arguments": [ "--extra-vars \"wolkenkit_version={{user `wolkenkit_version`}} node_version={{user `node_version`}} nvm_version={{user `nvm_version`}}\"" ]
     }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant"
+      },
+      {
+        "type": "vagrant-cloud",
+        "box_tag": "thenativeweb/wolkenkit",
+        "access_token": "{{user `vagrant_cloud_access_token`}}",
+        "version": "{{user `box_version`}}",
+        "version_description": "{{user `box_description`}}"
+      }
+    ]
   ]
 }
