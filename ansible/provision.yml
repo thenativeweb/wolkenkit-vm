@@ -31,7 +31,7 @@
       become: false
       wk:
         user: "{{ user }}"
-        version: "{{ wolkenkit_version }}"
+        version: "{{ wolkenkit_cli_version }}"
         shell: "{{ shell }}"
 
   tasks:
