@@ -32,10 +32,10 @@ Afterwards, use the `.ovf` file in the `output-vmware-iso` or `output-virtualbox
 
 ### Configuring the build
 
-You may need to adjust the versions of nvm, Node.js or wolkenkit. For that, provide the `-var` flag and set `nvm_version`, `node_version` or `wolkenkit_version` to the desired value, e.g.:
+You may need to adjust the versions of nvm, Node.js or wolkenkit. For that, provide the `-var` flag and set `nvm_version`, `node_version` or `wolkenkit_cli_version` to the desired value, e.g.:
 
 ```shell
-$ packer build -var 'wolkenkit_version=1.2.1' build.json
+$ packer build -var 'wolkenkit_cli_version=1.2.1' build.json
 ```
 
 Alternatively, you may change the appropriate lines in the file `build.json`.
