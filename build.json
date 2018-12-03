@@ -1,24 +1,32 @@
 {
   "variables": {
-    "box_version": "2.0.0",
-
-    "wolkenkit_cli_version": "2.0.0",
+    "box_version": "3.0.0",
+    "wolkenkit_cli_version": "3.0.0",
     "ubuntu_version": "18.04",
     "ubuntu_patch": "1",
     "ubuntu_checksum": "e8264fa4c417216f4304079bd94f895e",
     "node_version": "10.13.0",
     "nvm_version": "0.33.11",
-
     "vagrant_cloud_access_token": "{{env `VAGRANT_CLOUD`}}"
   },
   "builders": [
     {
       "type": "virtualbox-iso",
       "vboxmanage": [
-        [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
-        [ "modifyvm", "{{.Name}}", "--cpus", "2" ]
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "2048"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "2"
+        ]
       ],
-      "http_directory" : "http",
+      "http_directory": "http",
       "boot_command": [
         "<esc><wait>",
         "<esc><wait>",
@@ -54,13 +62,14 @@
       "ssh_password": "wolkenkit",
       "ssh_timeout": "30m",
       "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
-    }, {
+    },
+    {
       "type": "vmware-iso",
       "vmx_data": {
         "numvcpus": "2",
         "memsize": "2048"
       },
-      "http_directory" : "http",
+      "http_directory": "http",
       "boot_command": [
         "<esc><wait>",
         "<esc><wait>",
