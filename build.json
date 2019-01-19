@@ -1,7 +1,7 @@
 {
   "variables": {
-    "box_version": "3.0.0",
-    "wolkenkit_cli_version": "3.0.0",
+    "box_version": "3.1.0",
+    "wolkenkit_cli_version": "3.1.0",
     "ubuntu_version": "18.04",
     "ubuntu_patch": "1",
     "ubuntu_checksum": "e8264fa4c417216f4304079bd94f895e",
